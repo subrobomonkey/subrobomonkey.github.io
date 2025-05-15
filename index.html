@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="RoboMonkey: Scaling Test-Time Sampling and Verification for Vision-Language-Action Models">
+  <meta name="keywords" content="Robotics, VLA, VLM, Scaling">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+
+
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths is-centered has-text-centered">
+          <h2 class="subtitle is-size-1 publication-subtitle"><strong>RoboMonkey</strong></h2>
+          <h2 class="subtitle is-size-3 publication-subtitle">Scaling Test-Time Sampling and Verification<br>for Vision-Language-Action Models</h2>
+          <!-- <h3 class="subtitle is-size-4 publication-subtitle">CVPR 2025</h3> -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/" target="_blank">Annoynamous</a>&nbsp;&nbsp;
+            </span>
+            <!-- <ul class="list-inline-star">
+                    <li>
+                        <small><b>*</b>Equal Advising</small> 
+                    </li>
+              </ul> -->
+          </div>
+          <!-- School Logo -->
+          <!-- <image src="./static/images/logo_stanford_ucb.png" style="width: 60%;"></image> -->
+          <div>
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a
+                    href=""
+                    class="external-link button is-normal is-rounded is-dark"
+                >
+                    <span class="icon">
+                        <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                </a>
+            </span>
+            </div>
+
+        
+
+          </div>
+        </div>
+      </div>
+</section>
+
+<section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-4">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Vision-Language-Action (VLA) models, pre-trained on large-scale imitation learning datasets, have demonstrated remarkable capabilities in visuomotor control. However, these models exhibit diverse failure modes in unstructured real-world environments, limiting the widespread adoption of VLAs in robotics. Efforts to enhance the robustness and generalization of VLAs have gradually shifted from the pre-training to the post-training phase. Yet, the potential of scaling test-time compute remains underexplored. In this paper, we investigate test-time scaling for robotics through the lens of sampling and verification. We first demonstrate that the relationship between action error and the number of generated samples follows an exponentiated power law across a range of VLAs, indicating the existence of inference-time scaling laws. Building on this insight, we propose a synthetic data generation pipeline for training a Vision-Language Model (VLM)-based action verifier, and show that scaling the synthetic dataset consistently improves verification and downstream accuracy. We then introduce RoboMonkey, a test-time scaling framework for VLAs. At deployment, RoboMonkey samples a small set of actions from a VLA, applies Gaussian perturbations and majority voting to construct an action proposal distribution, and then uses the VLM-based verifier to select the optimal action. Through extensive evaluations across simulated and real-world environments, we show that pairing existing VLAs with RoboMonkey yields significant performance gains, achieving a 25% absolute improvement on out-of-distribution tasks and 8% higher average success rate on in-distribution tasks. Additionally, when adapting to new robot setups, we show that fine-tuning both VLAs and action verifiers yields a 7% performance increase compared to fine-tuning VLAs alone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-4">Inference-time Scaling Law</h2>
+          <div class="content has-text-justified">
+            <img src="./media/images/inference_scaling.png" alt="Scaling Law" height="100%">
+            <p>
+             We demonstrate that the relationship between action error and the number of generated samples follows an approximate power law across a range of VLAs. 
+             For power law fitting, we model the logarithm of action error e as a function of the number of samples: log(e) ≈ log(a) + b * log(k)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-five-fifths">
+          <h2 class="title is-4">Approach</h2>
+          <div class="content has-text-justified">
+                      <p>
+                <strong>Stage 1: Training the Action Verifier: </strong>  Given an imitation learning dataset, we sample N candidate actions per state from
+a generalist robot policy, and apply clustering to reduce them to K representative actions. We construct synthetic action comparisons and assign
+preferences based on the RMSE between each sampled action and the ground-truth action. This synthetic
+preference dataset is then used to fine-tune a VLM-based action verifier. 
+            </p>
+            <img src="./media/images/stage1.png" alt="Stage 1" height="100%">
+            <div class="columns is-centered">
+                <div class="column is-four-fifths">
+        </div>
+      </div>
+            <p>
+                <strong>Stage 2: Scaling Test-Time
+Compute: </strong> At deployment, we sample N&#770; initial actions from the generalist robot policy based on the given
+task instruction and observation. We fit a Gaussian distribution to the translation and rotation
+components of these actions, and use majority voting to determine the gripper state. This creates an action proposal distribution from which we can
+efficiently sample candidate actions with negligible overhead. Finally, we use the fine-tuned VLM-based
+verifier to evaluate these K&#770; candidate actions and select the optimal action.
+            </p>
+            <img src="./media/images/stage2.png" alt="Stage 2" height="100%">
+            <div class="columns is-centered">
+                <div class="column is-four-fifths">
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-4">Experimental Results</h2>
+          <div class="content has-text-justified">
+            <div class="is-flex is-justify-content-center">
+              <figure class="image is-inline-block">
+                <img src="./media/images/result_summary.png" alt="Result" style="width: 70%;">
+              </figure>
+            </div>
+            <p>
+            RoboMonkey achieves substantial performance improvements across both out-of-distribution and in-distribution tasks, as well as on new robot setups
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+  
+
+
+<section class="section">
+  <!-- <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4 has-text-centered mb-5">Evaluation</h2>
+          <img src="media/images/task_suites.png" alt="Task Suites" style="mix-blend-mode: multiply;">
+          <div class="content has-text-centered">
+            <p>
+              Example tasks across SIMPLER, real-world, and LIBERO environments.
+            </p>
+          </div> -->
+     <!-- <div class="box has-background-light"> -->
+  <h2 class="title is-4 has-text-centered mb-5">Experiments</h2>
+<div class="columns is-centered">
+  <div class="column is-7"> <!-- ~60% width of full page -->
+    
+    <div class="box has-background-light">
+      <!-- <h3 class="title is-4 has-text-centered mb-4">Evaluation Tasks</h3> -->
+      <div class="columns is-centered">
+        <div class="column is-five-fifths has-text-centered">
+          <img src="media/images/task_suites.png" alt="Task Suites" style="mix-blend-mode: multiply;">
+          <div class="content">
+            <p>
+              Example tasks across Bridge V2, SIMPLER, and LIBERO.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+
+<div class="columns is-centered">
+  <div class="column is-7"> <!-- ~60% width of full page -->
+    
+    <div class="box has-background-light">
+      <h3 class="title is-4 has-text-centered mb-4">① Bridge V2</h3>
+      <div class="columns is-centered">
+        <div class="column is-five-fifths has-text-centered">
+          <img src="media/images/results_ood.png" width="60%" alt="Results" style="mix-blend-mode: multiply;">
+          <div class="content">
+            <p>
+               Scaling test-time compute leads to substantial improvements on OOD generalization tasks, achieving a <strong>25%</strong> absolute improvement
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box has-background-light">
+      <h3 class="title is-4 has-text-centered mb-5">② SIMPLER</h3>
+      <div class="columns is-centered">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-five-fifths">
+            <img src="media/images/results_ind.png" width="60%" alt="Results" style="mix-blend-mode: multiply;">
+            <div class="content has-text-centered">
+              <p>
+                RoboMonkey improves the precision of generalist robot policies in the SIMPLER environment, leading to <strong>8%</strong> higher average success rate on in-distribution tasks
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box has-background-light">
+      <h3 class="title is-4 has-text-centered mb-3">③ LIBERO-LONG</h3>
+      <div class="columns is-centered">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-five-fifths">
+            <img src="media/images/finetune.png" width="50%" alt="Results" style="mix-blend-mode: multiply;">
+            <div class="content has-text-centered">
+              <p>
+                Fine-tuning both OpenVLA and RoboMonkey action verifier results in <strong>7%</strong> improvement in average success rate compared to simply fine-tuning OpenVLA on LIBERO-Long
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+          <!-- <div class="box has-background-light">
+            <h3 class="title is-4 has-text-centered mb-3">Scaling Synthetic Training Dataset</h3>
+            <div class="columns is-centered">
+              <div class="columns is-centered has-text-centered">
+                <div class="column is-five-fifths">
+                  <img src="media/images/synthetic_cropped.png" width="60%" alt="Results" style="mix-blend-mode: multiply;">
+                  <div class="content has-text-centered">
+                  <p>
+                   The average success rates across 4 tasks on SIMPLER grows nearly log-linearly with synthetic dataset size, highlighting the potential of large-scale synthetic data generation for enhancing action verification
+                  </p>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2 class="title is-4 has-text-centered mb-5">Case Studies</h2>
+  <div class="columns is-centered">
+    <div class="column is-7">
+
+      <!-- Imprecise Grasping -->
+      <div class="box has-background-light">
+        <h3 class="title is-5 has-text-centered mb-4">Imprecise Grasping</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>OpenVLA ❌</strong></p>
+            <img src="media/gifs/imprecise_grasping_fail.gif" style="border-radius: 4px;" width="100%" alt="Imprecise Grasping Fail">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>V-GPS ❌</strong></p>
+            <img src="media/gifs/imprecise_vgps.gif" style="border-radius: 4px;" width="100%" alt="Imprecise Grasping VGPS">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>RoboMonkey ✅</strong></p>
+            <img src="media/gifs/imprecise_grasping_success.gif" style="border-radius: 4px;" width="100%" alt="Imprecise Grasping Success">
+          </div>
+        </div>
+        <div class="content has-text-centered mt-3">
+          <!-- <p>Scaling test-time compute leads to substantial improvements on OOD generalization tasks, achieving a <strong>25%</strong> absolute improvement.</p> -->
+        </div>
+      </div>
+
+      <!-- Task Progression -->
+      <div class="box has-background-light">
+        <h3 class="title is-5 has-text-centered mb-4">Task Progression Failure</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>OpenVLA ❌</strong></p>
+            <img src="media/gifs/task_progression_fail.gif" style="border-radius: 4px;" width="100%" alt="Task Progression Fail">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>V-GPS ❌</strong></p>
+            <img src="media/gifs/task_progression_vgps.gif" style="border-radius: 4px;" width="100%" alt="Task Progression VGPS">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>RoboMonkey ✅</strong></p>
+            <img src="media/gifs/task_progression_success.gif" style="border-radius: 4px;" width="100%" alt="Task Progression Success">
+          </div>
+        </div>
+        <div class="content has-text-centered mt-3">
+          <!-- <p>RoboMonkey improves the precision of generalist robot policies in the SIMPLER environment, leading to a <strong>8%</strong> higher average success rate on in-distribution tasks.</p> -->
+        </div>
+      </div>
+
+      <!-- Collision -->
+      <div class="box has-background-light">
+        <h3 class="title is-5 has-text-centered mb-4">Collision</h3>
+        <div class="columns is-centered has-text-centered">
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>OpenVLA ❌</strong></p>
+            <img src="media/gifs/collision_fail.gif" style="border-radius: 4px;" width="100%" alt="Collision Fail">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>V-GPS ❌</strong></p>
+            <img src="media/gifs/collision_vgps.gif" style="border-radius: 4px;" width="100%" alt="Collision VGPS">
+          </div>
+          <div class="column">
+            <p style="font-size: 1.1em;"><strong>RoboMonkey ✅</strong></p>
+            <img src="media/gifs/collision_success.gif" style="border-radius: 4px;" width="100%" alt="Collision Success">
+          </div>
+        </div>
+        <div class="content has-text-centered mt-3">
+          <!-- <p>Fine-tuning both OpenVLA and RoboMonkey action verifier results in a <strong>7%</strong> improvement in average success rate compared to simply fine-tuning OpenVLA on LIBERO-Long.</p> -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <!-- <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-4 has-text-centered mb-5">Evaluation</h2>
+          <img src="media/images/task_suites.png" alt="Task Suites" style="mix-blend-mode: multiply;">
+          <div class="content has-text-centered">
+            <p>
+              Example tasks across SIMPLER, real-world, and LIBERO environments.
+            </p>
+          </div> -->
+     <!-- <div class="box has-background-light"> -->
+    <h2 class="title is-4 has-text-centered mb-5">How does RoboMonkey enable practical deployment for test-time scaling?</h2>
+
+<div class="columns is-centered">
+  <div class="column is-7"> <!-- ~60% width of full page -->
+    
+    <div class="box has-background-light">
+      <!-- <h3 class="title is-4 has-text-centered mb-4">Evaluation Tasks</h3> -->
+      <h2 class="title is-4 has-text-centered mb-5">① VLA Serving Engine</h2>
+      <div class="columns is-centered">
+        <div class="column is-five-fifths has-text-centered">
+          <img src="media/images/latency.png" alt="Latency" style="mix-blend-mode: multiply;">
+          <div class="content">
+            <p>
+Repeated sampling can exploit KV Cache optimizations and batch processing to achieve higher throughput than greedy decoding. Therefore, we extended SGLang’s capabilities to properly support OpenVLA. Our optimized implementation substantially outperforms the naive OpenVLA inference pipeline, achieving lower latency and significantly higher throughput across batch sizes.
+</div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+
+    <div class="columns is-centered">
+  <div class="column is-7"> <!-- ~60% width of full page -->
+    
+    <div class="box has-background-light">
+      <!-- <h3 class="title is-4 has-text-centered mb-4">Evaluation Tasks</h3> -->
+      <h2 class="title is-4 has-text-centered mb-5">② Gaussian Perturbation</h2>
+      <div class="columns is-centered">
+        <div class="column is-five-fifths has-text-centered">
+        <img src="media/images/gaussian.png" alt="Latency" style="mix-blend-mode: multiply; width: 50%;">
+          <div class="content">
+            <p>
+Gaussian perturbation applied to a small set of actions is more efficient than naively sampling actions from robot policies when constructing action proposal distributions. RoboMonkey can sample and verify 16 candidate actions in 650 ms (or 1.5 Hz).</div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+</section>
+
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>TBD</code></pre>
+    </div>
+</section>
+
+
+</body>
+</html>
