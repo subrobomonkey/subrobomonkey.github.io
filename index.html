@@ -99,13 +99,14 @@
   <section class="section">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
+        <div class="column is-five-fifths">
           <h2 class="title is-4">Inference-time Scaling Law</h2>
           <div class="content has-text-justified">
-            <img src="./media/images/inference_scaling.png" alt="Scaling Law" height="100%">
+<img src="./media/images/inference_scaling.png" alt="Scaling Law" style="width: 100%; max-width: 1200px; display: block; margin-left: auto; margin-right: auto;">
             <p>
-             We demonstrate that the relationship between action error and the number of generated samples follows an approximate power law across a range of VLAs. 
-             For power law fitting, we model the logarithm of action error e as a function of the number of samples: log(e) ≈ log(a) + b * log(k)
+              <br>
+            We observe that a robot policy's action error decreases as we scale the number of generated actions across multiple sampling approaches. Policy sampling, Gaussian perturbation, and even random sampling all outperform single-attempt OpenVLA. 
+            We also find that the relationship between action error and the number of samples generated through Gaussian Perturbation follows an approximate power law across a range of VLA models, including CogACT, Octo, OpenVLA, and SpatialVLA. For power law fitting, we model the logarithm of action error e as a function of the number of samples: log(e) ≈ log(a) + b * log(k).
             </p>
           </div>
         </div>
